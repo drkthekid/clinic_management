@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: clinic_management_system
+
+  ## database config
+  datasource:
+    url: jdbc:mysql://localhost:3306/clinic?createDatabaseIfNotExist=true
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+
+  ## hibernate configuration
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show_sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
