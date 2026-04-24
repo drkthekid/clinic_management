@@ -1,5 +1,6 @@
 package chagas.com.br.clinic_management_system.database.entity.user;
 
+import chagas.com.br.clinic_management_system.database.entity.admin.Admin;
 import chagas.com.br.clinic_management_system.database.entity.appointment.Appointment;
 import chagas.com.br.clinic_management_system.database.entity.patient.Patient;
 import chagas.com.br.clinic_management_system.database.entity.professional.Dentist;
@@ -60,6 +61,9 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user")
     private Dentist dentist;
 
+    @OneToOne(mappedBy = "user")
+    private Admin admin;
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
@@ -83,7 +87,7 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-                .map(r -> new SimpleGrantedAuthority(r.name()))
+                .map(r -> new SimpleGrantedAuthority("ROLE_" + r.name()))
                 .toList();
     }
 
