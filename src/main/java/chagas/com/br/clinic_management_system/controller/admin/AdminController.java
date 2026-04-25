@@ -1,8 +1,7 @@
-package chagas.com.br.clinic_management_system.controller.admin.user;
+package chagas.com.br.clinic_management_system.controller.admin;
 
 import chagas.com.br.clinic_management_system.database.entity.user.Role;
 import chagas.com.br.clinic_management_system.dto.response.UserResponseDTO;
-import chagas.com.br.clinic_management_system.service.admin.create_user.CreateUserStaffService;
 import chagas.com.br.clinic_management_system.service.admin.list_users.ListUsersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
