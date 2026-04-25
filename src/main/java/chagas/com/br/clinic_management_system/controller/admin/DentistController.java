@@ -2,7 +2,7 @@ package chagas.com.br.clinic_management_system.controller.admin;
 
 import chagas.com.br.clinic_management_system.dto.request.UserRequestDTO;
 import chagas.com.br.clinic_management_system.dto.response.UserResponseDTO;
-import chagas.com.br.clinic_management_system.service.admin.create_user.CreateUserStaffService;
+import chagas.com.br.clinic_management_system.service.admin.create_users.CreateUserStaffService;
 import chagas.com.br.clinic_management_system.service.admin.list_users.ListUsersService;
 import chagas.com.br.clinic_management_system.service.admin.update_users.UpdateUserService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/admin/dentists")
+@RequestMapping("/api/admin/users/dentists")
 @RequiredArgsConstructor
 public class DentistController {
 

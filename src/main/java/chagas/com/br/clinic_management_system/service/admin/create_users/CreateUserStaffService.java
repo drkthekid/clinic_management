@@ -1,14 +1,17 @@
-package chagas.com.br.clinic_management_system.service.admin.create_user;
+package chagas.com.br.clinic_management_system.service.admin.create_users;
 
+import chagas.com.br.clinic_management_system.database.entity.admin.Admin;
 import chagas.com.br.clinic_management_system.database.entity.professional.Dentist;
 import chagas.com.br.clinic_management_system.database.entity.professional.Doctor;
 import chagas.com.br.clinic_management_system.database.entity.user.Role;
 import chagas.com.br.clinic_management_system.database.entity.user.User;
+import chagas.com.br.clinic_management_system.database.repository.user.AdminRepository;
 import chagas.com.br.clinic_management_system.database.repository.user.DentistRepository;
 import chagas.com.br.clinic_management_system.database.repository.user.DoctorRepository;
 import chagas.com.br.clinic_management_system.database.repository.user.UserRepository;
 import chagas.com.br.clinic_management_system.dto.request.UserRequestDTO;
 import chagas.com.br.clinic_management_system.dto.response.UserResponseDTO;
+import chagas.com.br.clinic_management_system.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,38 @@ public class CreateUserStaffService {
     private final PasswordEncoder passwordEncoder;
     private final DoctorRepository doctorRepository;
     private final DentistRepository dentistRepository;
+    private final AdminRepository adminRepository;
+
+    @Transactional
+    public UserResponseDTO createAdmin(UserRequestDTO userRequestDTO) {
+
+        if (userRepository.findByEmail(userRequestDTO.email()).isPresent()) {
+            throw new BadRequestException("Email already exists");
+        }
+
+        User user = userRepository.save(User.builder()
+                .name(userRequestDTO.name())
+                .email(userRequestDTO.email())
+                .password(passwordEncoder.encode(userRequestDTO.password()))
+                .roles(Set.of(Role.ADMIN))
+                .build()
+        );
+
+        Admin admin = Admin.builder()
+                .user(user)
+                .build();
+
+        adminRepository.save(admin);
+
+        return UserResponseDTO.builder()
+                .id(admin.getUser().getId())
+                .name(admin.getUser().getName())
+                .email(admin.getUser().getEmail())
+                .roles(admin.getUser().getRoles().stream().map(Enum::name)
+                        .collect(Collectors.toSet()))
+                .createdAt(admin.getUser().getCreatedAt())
+                .build();
+    }
 
     @Transactional
     public UserResponseDTO createDoctor(UserRequestDTO userRequestDTO) {
