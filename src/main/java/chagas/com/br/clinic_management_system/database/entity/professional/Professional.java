@@ -2,8 +2,8 @@ package chagas.com.br.clinic_management_system.database.entity.professional;
 
 import chagas.com.br.clinic_management_system.database.entity.user.User;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
@@ -13,6 +13,9 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class Professional {
 
     @Id
