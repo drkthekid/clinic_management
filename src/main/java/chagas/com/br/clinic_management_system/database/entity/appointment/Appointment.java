@@ -1,15 +1,9 @@
 package chagas.com.br.clinic_management_system.database.entity.appointment;
 
 import chagas.com.br.clinic_management_system.database.entity.patient.Patient;
-import chagas.com.br.clinic_management_system.database.entity.professional.Dentist;
-import chagas.com.br.clinic_management_system.database.entity.professional.Doctor;
 import chagas.com.br.clinic_management_system.database.entity.professional.Professional;
-import chagas.com.br.clinic_management_system.database.entity.user.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Appointment {
 
     @Id
@@ -29,7 +24,7 @@ public class Appointment {
     @Column(nullable = false)
     private Type type;
 
-    // dentist || doctor
+    // dentist || doctor que estiver disponivel (a fzr)
     @ManyToOne
     @JoinColumn(name = "professional_id")
     private Professional professional;

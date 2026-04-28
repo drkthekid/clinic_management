@@ -7,6 +7,7 @@ import chagas.com.br.clinic_management_system.database.entity.user.User;
 import chagas.com.br.clinic_management_system.database.repository.user.DentistRepository;
 import chagas.com.br.clinic_management_system.database.repository.user.DoctorRepository;
 import chagas.com.br.clinic_management_system.database.repository.user.UserRepository;
+import chagas.com.br.clinic_management_system.dto.response.ProfessionalResponseDTO;
 import chagas.com.br.clinic_management_system.dto.response.UserResponseDTO;
 import chagas.com.br.clinic_management_system.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -63,30 +64,32 @@ public class ListUsersService {
                 .build();
     }
 
-    public Page<UserResponseDTO> findAllDoctors(Integer page, Integer size) {
+    public Page<ProfessionalResponseDTO> findAllDoctors(Integer page, Integer size) {
         Page<Doctor> doctors = doctorRepository.findAll(PageRequest.of(page, size));
 
-        return doctors.map(doctor -> UserResponseDTO.builder()
+        return doctors.map(doctor -> ProfessionalResponseDTO.builder()
                 .id(doctor.getUser().getId())
                 .name(doctor.getUser().getName())
                 .email(doctor.getUser().getEmail())
                 .roles(doctor.getUser().getRoles().stream()
                         .map(Enum::name)
                         .collect(Collectors.toSet()))
+                .availability(doctor.getAvailability())
                 .createdAt(doctor.getUser().getCreatedAt())
                 .build());
     }
 
-    public Page<UserResponseDTO> findAllDentists(Integer page, Integer size) {
+    public Page<ProfessionalResponseDTO> findAllDentists(Integer page, Integer size) {
         Page<Dentist> dentists = dentistRepository.findAll(PageRequest.of(page, size));
 
-        return dentists.map(dentist -> UserResponseDTO.builder()
+        return dentists.map(dentist -> ProfessionalResponseDTO.builder()
                 .id(dentist.getUser().getId())
                 .name(dentist.getUser().getName())
                 .email(dentist.getUser().getEmail())
                 .roles(dentist.getUser().getRoles().stream()
                         .map(Enum::name)
                         .collect(Collectors.toSet()))
+                .availability(dentist.getAvailability())
                 .createdAt(dentist.getUser().getCreatedAt())
                 .build());
     }

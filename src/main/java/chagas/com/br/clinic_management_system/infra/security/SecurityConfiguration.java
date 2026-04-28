@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -47,6 +48,10 @@ public class SecurityConfiguration {
 
                         // admin
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET, "/api/apointments/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/apointments/**").hasRole("USER")
+
 
                         .anyRequest().authenticated()
                 )

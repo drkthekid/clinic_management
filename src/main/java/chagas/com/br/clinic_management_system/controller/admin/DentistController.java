@@ -1,6 +1,7 @@
 package chagas.com.br.clinic_management_system.controller.admin;
 
 import chagas.com.br.clinic_management_system.dto.request.UserRequestDTO;
+import chagas.com.br.clinic_management_system.dto.response.ProfessionalResponseDTO;
 import chagas.com.br.clinic_management_system.dto.response.UserResponseDTO;
 import chagas.com.br.clinic_management_system.service.admin.create_users.CreateUserStaffService;
 import chagas.com.br.clinic_management_system.service.admin.list_users.ListUsersService;
@@ -21,7 +22,7 @@ public class DentistController {
     private final UpdateUserService updateUserService;
 
     @GetMapping
-    public Page<UserResponseDTO> findAllUsersDentists(
+    public Page<ProfessionalResponseDTO> findAllUsersDentists(
             @RequestParam int page,
             @RequestParam int size) {
         return listUsersService.findAllDentists(page, size);

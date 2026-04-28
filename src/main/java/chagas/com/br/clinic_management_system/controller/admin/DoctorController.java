@@ -1,6 +1,7 @@
 package chagas.com.br.clinic_management_system.controller.admin;
 
 import chagas.com.br.clinic_management_system.dto.request.UserRequestDTO;
+import chagas.com.br.clinic_management_system.dto.response.ProfessionalResponseDTO;
 import chagas.com.br.clinic_management_system.dto.response.UserResponseDTO;
 import chagas.com.br.clinic_management_system.service.admin.create_users.CreateUserStaffService;
 import chagas.com.br.clinic_management_system.service.admin.list_users.ListUsersService;
@@ -21,14 +22,14 @@ public class DoctorController {
     private final UpdateUserService updateUserService;
 
     @GetMapping
-    public Page<UserResponseDTO> findAllUsersDoctors(
+    public Page<ProfessionalResponseDTO> findAllUsersDoctors(
             @RequestParam int page,
             @RequestParam int size) {
         return listUsersService.findAllDoctors(page, size);
     }
 
     @PostMapping
-    public UserResponseDTO createDoctor(@RequestBody UserRequestDTO userRequestDTO) {
+    public ProfessionalResponseDTO createDoctor(@RequestBody UserRequestDTO userRequestDTO) {
         return createUserStaffService.createDoctor(userRequestDTO);
     }
 

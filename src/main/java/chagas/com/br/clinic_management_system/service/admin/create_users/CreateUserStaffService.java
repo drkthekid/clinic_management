@@ -10,6 +10,7 @@ import chagas.com.br.clinic_management_system.database.repository.user.DentistRe
 import chagas.com.br.clinic_management_system.database.repository.user.DoctorRepository;
 import chagas.com.br.clinic_management_system.database.repository.user.UserRepository;
 import chagas.com.br.clinic_management_system.dto.request.UserRequestDTO;
+import chagas.com.br.clinic_management_system.dto.response.ProfessionalResponseDTO;
 import chagas.com.br.clinic_management_system.dto.response.UserResponseDTO;
 import chagas.com.br.clinic_management_system.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
@@ -62,7 +63,12 @@ public class CreateUserStaffService {
     }
 
     @Transactional
-    public UserResponseDTO createDoctor(UserRequestDTO userRequestDTO) {
+    public ProfessionalResponseDTO createDoctor(UserRequestDTO userRequestDTO) {
+
+        if (userRepository.findByEmail(userRequestDTO.email()).isPresent()) {
+            throw new BadRequestException("Email already exists");
+        }
+
         User user = userRepository.save(
                 User.builder()
                         .name(userRequestDTO.name())
@@ -75,13 +81,14 @@ public class CreateUserStaffService {
         // create doctor
         Doctor doctor = Doctor.builder()
                 .user(user)
+                .availability(true)
                 .build();
 
         doctorRepository.save(doctor);
 
 
         // return doctor
-        return UserResponseDTO.builder()
+        return ProfessionalResponseDTO.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
@@ -89,11 +96,17 @@ public class CreateUserStaffService {
                         .map(Enum::name)
                         .collect(Collectors.toSet()))
                 .createdAt(user.getCreatedAt())
+                .availability(doctor.getAvailability())
                 .build();
     }
 
     @Transactional
     public UserResponseDTO createDentist(UserRequestDTO userRequestDTO) {
+
+        if (userRepository.findByEmail(userRequestDTO.email()).isPresent()) {
+            throw new BadRequestException("Email already exists");
+        }
+
         User user = userRepository.save(
                 User.builder()
                         .name(userRequestDTO.name())

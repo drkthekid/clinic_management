@@ -25,4 +25,7 @@ public abstract class Professional {
     @OneToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    // false and true availability
+    private Boolean availability = true;
 }
