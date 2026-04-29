@@ -51,6 +51,8 @@ public class SecurityConfiguration {
 
                         .requestMatchers("/api/apointments/**").authenticated()
 
+                        .requestMatchers("/api/me/**").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
