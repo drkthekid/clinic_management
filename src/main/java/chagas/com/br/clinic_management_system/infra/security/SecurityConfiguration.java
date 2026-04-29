@@ -49,9 +49,7 @@ public class SecurityConfiguration {
                         // admin
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
-                        .requestMatchers(HttpMethod.GET, "/api/apointments/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/api/apointments/**").hasRole("USER")
-
+                        .requestMatchers("/api/apointments/**").authenticated()
 
                         .anyRequest().authenticated()
                 )

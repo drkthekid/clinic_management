@@ -1,7 +1,6 @@
 package chagas.com.br.clinic_management_system.database.entity.user;
 
 import chagas.com.br.clinic_management_system.database.entity.admin.Admin;
-import chagas.com.br.clinic_management_system.database.entity.appointment.Appointment;
 import chagas.com.br.clinic_management_system.database.entity.patient.Patient;
 import chagas.com.br.clinic_management_system.database.entity.professional.Dentist;
 import chagas.com.br.clinic_management_system.database.entity.professional.Doctor;

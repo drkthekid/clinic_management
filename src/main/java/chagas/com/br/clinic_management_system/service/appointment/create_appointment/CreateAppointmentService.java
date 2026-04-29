@@ -33,11 +33,10 @@ public class CreateAppointmentService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow();
 
-        Patient patient = Patient.builder()
-                .user(user)
-                .build();
 
-        patientRepository.save(patient);
+        Patient patient = user.getPatient();
+
+        // patientRepository.save(patient);
 
         Doctor doctor = doctorRepository.findByAvailabilityTrue();
 

@@ -6,9 +6,12 @@ import chagas.com.br.clinic_management_system.service.appointment.create_appoint
 import chagas.com.br.clinic_management_system.service.appointment.list_appointments.ListAppointmentsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -19,10 +22,18 @@ public class AppointmentController {
     private final ListAppointmentsService listAppointmentsService;
 
 
-    @GetMapping()
-    public Page<AppointmentResponseDTO> findAllApointments(@RequestParam int page,
-                                                           @RequestParam int size) {
+    @GetMapping
+    public Page<AppointmentResponseDTO> findAllAppointments(@RequestParam int page,
+                                                            @RequestParam int size) {
         return listAppointmentsService.listAllAppointments(page, size);
+    }
+
+    @PreAuthorize("#id == authentication.principal.id")
+    @GetMapping("/{id}")
+    public Page<AppointmentResponseDTO> findAllMyAppointments(@PathVariable UUID id,
+                                                              @RequestParam int page,
+                                                              @RequestParam int size) {
+        return listAppointmentsService.listAllAppointmentsByPatient(id, page, size);
     }
 
     @PostMapping
