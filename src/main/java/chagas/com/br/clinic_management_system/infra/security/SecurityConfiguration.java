@@ -49,8 +49,10 @@ public class SecurityConfiguration {
                         // admin
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
+                        // appointments
                         .requestMatchers("/api/apointments/**").authenticated()
 
+                        // me
                         .requestMatchers("/api/me/**").authenticated()
 
                         .anyRequest().authenticated()

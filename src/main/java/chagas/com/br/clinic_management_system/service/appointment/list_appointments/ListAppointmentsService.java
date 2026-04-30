@@ -2,9 +2,11 @@ package chagas.com.br.clinic_management_system.service.appointment.list_appointm
 
 import chagas.com.br.clinic_management_system.database.entity.appointment.Appointment;
 import chagas.com.br.clinic_management_system.database.entity.patient.Patient;
+import chagas.com.br.clinic_management_system.database.entity.professional.Professional;
 import chagas.com.br.clinic_management_system.database.entity.user.User;
 import chagas.com.br.clinic_management_system.database.repository.appointment.AppointmentRepository;
 import chagas.com.br.clinic_management_system.database.repository.user.PatientRepository;
+import chagas.com.br.clinic_management_system.database.repository.user.ProfessionalRepository;
 import chagas.com.br.clinic_management_system.database.repository.user.UserRepository;
 import chagas.com.br.clinic_management_system.dto.response.AppointmentResponseDTO;
 import chagas.com.br.clinic_management_system.dto.response.UserSummary;
@@ -22,7 +24,7 @@ public class ListAppointmentsService {
 
     private final AppointmentRepository appointmentRepository;
     private final UserRepository userRepository;
-    private final PatientRepository patientRepository;
+    private final ProfessionalRepository professionalRepository;
 
     // list all appointments for admin || list all appointments for user
 
@@ -55,7 +57,6 @@ public class ListAppointmentsService {
 
         Patient patient = user.getPatient();
 
-
         Page<Appointment> appointments = appointmentRepository.findAllAppointmentsByPatient(patient, PageRequest.of(page, size));
 
         System.out.println(appointments);
@@ -75,6 +76,39 @@ public class ListAppointmentsService {
                 .schedule(appointment.getSchedule())
                 .build()
         );
+    }
+
+    public Page<AppointmentResponseDTO> listAllAppointmentsByProfessional(UUID id, Integer page, Integer size) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Professional not found"));
+
+        Professional professional;
+
+        if (user.getDoctor() != null) {
+            professional = user.getDoctor();
+        } else if (user.getDentist() != null) {
+            professional = user.getDentist();
+        } else {
+            throw new NotFoundException("Professional not found");
+        }
+
+        Page<Appointment> appointments = appointmentRepository.findAllAppointmentsByProfessional(professional, PageRequest.of(page, size));
+
+        return appointments.map(appointment -> AppointmentResponseDTO.builder()
+                .id(appointment.getId())
+                .type(appointment.getType().name())
+                .professional(new UserSummary(
+                        appointment.getProfessional().getUser().getId(),
+                        appointment.getProfessional().getUser().getName()
+                ))
+                .patient(new UserSummary(
+                        appointment.getPatient().getUser().getId(),
+                        appointment.getPatient().getUser().getName()
+                ))
+                .status(appointment.getStatus().name())
+                .schedule(appointment.getSchedule())
+                .build());
     }
 
 

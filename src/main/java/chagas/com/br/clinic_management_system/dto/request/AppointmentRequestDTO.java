@@ -7,5 +7,6 @@ import java.util.UUID;
 
 @Builder
 public record AppointmentRequestDTO(UUID patientId,
-                                    LocalDateTime schedule) {
+                                    LocalDateTime schedule,
+                                    String status) {
 }
